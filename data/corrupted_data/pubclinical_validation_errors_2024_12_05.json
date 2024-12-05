@@ -1,0 +1,26 @@
+[
+    {
+        "id": "NCT04237090",
+        "title": "  ",
+        "date": "1 January 2020",
+        "journal": "Journal of emergency nursing",
+        "source_file": "clinical_trials",
+        "source_file_type": "csv"
+    },
+    {
+        "id": "NCT03490942",
+        "title": "Glucagon Infusion in T1D Patients With Recurrent Severe Hypoglycemia: Effects on Counter-Regulatory Responses",
+        "date": "25/05/2020",
+        "journal": "",
+        "source_file": "clinical_trials",
+        "source_file_type": "csv"
+    },
+    {
+        "id": "",
+        "title": "OMAAAAAAAAAAAAAAAAAARRRRRRR",
+        "date": "",
+        "journal": "OMAR",
+        "source_file": "pubmed",
+        "source_file_type": "json"
+    }
+]

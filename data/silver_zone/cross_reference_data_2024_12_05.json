@@ -1,0 +1,135 @@
+[
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2020-01-01",
+        "source_file": "clinical_trials",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2020-01-01",
+        "source_file": "clinical_trials",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2020-01-01",
+        "source_file": "clinical_trials",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2019-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2019-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "DIPHENHYDRAMINE",
+        "journal": "The Journal of pediatrics",
+        "mention_date": "2019-02-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "TETRACYCLINE",
+        "journal": "Journal of food protection",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "TETRACYCLINE",
+        "journal": "American journal of veterinary research",
+        "mention_date": "2020-02-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "TETRACYCLINE",
+        "journal": "Psychopharmacology",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "ETHANOL",
+        "journal": "Psychopharmacology",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "ATROPINE",
+        "journal": "The journal of maternal-fetal & neonatal medicine",
+        "mention_date": "2020-01-03",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "EPINEPHRINE",
+        "journal": "Journal of emergency nursing",
+        "mention_date": "2020-04-27",
+        "source_file": "clinical_trials",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "EPINEPHRINE",
+        "journal": "The journal of allergy and clinical immunology. In practice",
+        "mention_date": "2020-01-02",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "EPINEPHRINE",
+        "journal": "The journal of allergy and clinical immunology. In practice",
+        "mention_date": "2020-01-03",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "ISOPRENALINE",
+        "journal": "Journal of photochemistry and photobiology. B, Biology",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "BETAMETHASONE",
+        "journal": "Hôpitaux Universitaires de Genève",
+        "mention_date": "2020-01-01",
+        "source_file": "clinical_trials",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "BETAMETHASONE",
+        "journal": "The journal of maternal-fetal & neonatal medicine",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "BETAMETHASONE",
+        "journal": "Journal of back and musculoskeletal rehabilitation",
+        "mention_date": "2020-01-01",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    },
+    {
+        "drug": "BETAMETHASONE",
+        "journal": "The journal of maternal-fetal & neonatal medicine",
+        "mention_date": "2020-01-03",
+        "source_file": "pubmed",
+        "ingestion_timestamp": "2024-12-05 20:35:24.190743"
+    }
+]
