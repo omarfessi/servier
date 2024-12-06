@@ -280,57 +280,6 @@ class TestGetAllDrugsByJournals:
         assert_that(drugs, empty())
 
 
-class TestGetDrugsFromJournalsThatMentionASpecificDrug:
-    def test_get_drugs_from_journals_that_mention_a_specific_drug(self):
-        # Given
-        specific_drug = "DIPHENHYDRAMINE"
-        expected_drugs = {"DIPHENHYDRAMINE"}
-        # When
-        drugs = get_drugs_from_journals_that_mention_a_specific_drug(
-            data, specific_drug
-        )
-        # Then
-        assert_that(drugs, equal_to(expected_drugs))
-
-    def test_get_drugs_from_journals_that_mention_a_specific_drug_with_no_mentions(
-        self,
-    ):
-        # Given
-        specific_drug = "UNKNOWN_DRUG"
-        # When
-        drugs = get_drugs_from_journals_that_mention_a_specific_drug(
-            data, specific_drug
-        )
-        # Then
-        assert_that(drugs, empty())
-
-    def test_get_drugs_from_journals_that_mention_a_specific_drug_with_single_mention(
-        self,
-    ):
-        # Given
-        specific_drug = "ISOPRENALINE"
-        expected_drugs = {"ISOPRENALINE"}
-        # When
-        drugs = get_drugs_from_journals_that_mention_a_specific_drug(
-            data, specific_drug
-        )
-        # Then
-        assert_that(drugs, equal_to(expected_drugs))
-
-    def test_get_drugs_from_journals_that_mention_a_specific_drug_with_multiple_mentions(
-        self,
-    ):
-        # Given
-        specific_drug = "BETAMETHASONE"
-        expected_drugs = {"BETAMETHASONE", "ATROPINE"}
-        # When
-        drugs = get_drugs_from_journals_that_mention_a_specific_drug(
-            data, specific_drug
-        )
-        # Then
-        assert_that(drugs, equal_to(expected_drugs))
-
-
 class TestListFilesInFolder:
     def test_list_files_in_folder_should_only_return_supported_file_names(
         self, tmp_path, temp_csv_file, temp_json_file, temp_random_text_file

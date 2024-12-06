@@ -1,12 +1,14 @@
+import json
 import pathlib
-import pytest
+from hamcrest import assert_that, equal_to, contains_inanyorder
 from pydantic import ValidationError
 from servier.main import (
     curate_pubclinical_data,
     curate_drugs_data,
     cross_reference_models,
+    _get_drugs_from_journals_that_mention_a_specific_drug,
 )
-from servier.models import PubClinical, Drug, CrossReference
+from servier.models import PubClinical, Drug
 from servier.utils.helpers import read_raw_data
 
 
@@ -138,3 +140,86 @@ def test_cross_reference_models():
     cross_reference_data, errors = cross_reference_models(pubclinical_data, drugs_data)
     assert len(cross_reference_data) == 2
     assert len(errors) == 0
+
+
+class TestGetDrugsFromJournalsThatMentionASpecificDrug:
+    def test_get_drugs_from_journals_that_mention_a_specific_drug(
+        self, tmp_path, temp_json_file, cross_reference_sample_data
+    ):
+        # Given
+        json_file_name = "cross_reference_data_test.json"
+        silver_zone_path = tmp_path / "silver_zone"
+        silver_zone_path.mkdir()
+
+        gold_zone_path = tmp_path / "gold_zone"
+        gold_zone_path.mkdir()
+
+        specific_drug = "DIPHENHYDRAMINE"
+        expected_drugs = ["DIPHENHYDRAMINE"]
+
+        temp_json_file(silver_zone_path / json_file_name, cross_reference_sample_data)
+        # When
+        _get_drugs_from_journals_that_mention_a_specific_drug(
+            silver_zone_path, gold_zone_path, specific_drug
+        )
+        # Then
+        output_files = list(
+            gold_zone_path.glob(f"drugs_by_journals_by_{specific_drug}_*.json")
+        )
+        assert len(output_files) == 1
+
+        with open(output_files[0], "r") as f:
+            drugs = json.load(f)
+
+        assert_that(drugs, equal_to(expected_drugs))
+
+    def test_get_drugs_from_journals_that_mention_a_specific_drug_with_unknown_drug(
+        self, tmp_path, temp_json_file, cross_reference_sample_data
+    ):
+        # Given
+        specific_drug = "UNKNOWN_DRUG"
+        json_file_name = "cross_reference_data_test.json"
+        silver_zone_path = tmp_path / "silver_zone"
+        silver_zone_path.mkdir()
+
+        gold_zone_path = tmp_path / "gold_zone"
+        gold_zone_path.mkdir()
+
+        temp_json_file(silver_zone_path / json_file_name, cross_reference_sample_data)
+
+        # When
+        _get_drugs_from_journals_that_mention_a_specific_drug(
+            silver_zone_path, gold_zone_path, specific_drug
+        )
+        # Then
+        output_files = list(
+            gold_zone_path.glob(f"drugs_by_journals_by_{specific_drug}_*.json")
+        )
+        assert len(output_files) == 0
+
+    def test_get_drugs_from_journals_that_mention_a_specific_drug_with_multiple_mentions(
+        self, tmp_path, temp_json_file, cross_reference_sample_data
+    ):
+        # Given
+        specific_drug = "BETAMETHASONE"
+        expected_drugs = ["BETAMETHASONE", "ATROPINE"]
+        json_file_name = "cross_reference_data_test.json"
+        silver_zone_path = tmp_path / "silver_zone"
+        silver_zone_path.mkdir()
+
+        gold_zone_path = tmp_path / "gold_zone"
+        gold_zone_path.mkdir()
+        temp_json_file(silver_zone_path / json_file_name, cross_reference_sample_data)
+
+        # When
+        _get_drugs_from_journals_that_mention_a_specific_drug(
+            silver_zone_path, gold_zone_path, specific_drug
+        )
+        # Then
+        output_files = list(
+            gold_zone_path.glob(f"drugs_by_journals_by_{specific_drug}_*.json")
+        )
+        with open(output_files[0], "r") as f:
+            drugs = json.load(f)
+
+        assert_that(expected_drugs, contains_inanyorder(*drugs))
