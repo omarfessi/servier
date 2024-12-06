@@ -44,21 +44,18 @@ def curate_pubclinical_data(
 
 
 def curate_drugs_data(
-    raw_pubtrials_data_files: list[pathlib.Path],
+    raw_drugs_data_files: list[pathlib.Path],
 ) -> tuple[list[Drug], list[str]]:
-    valid_pubtrials_data = []
+    valid_drugs_data = []
     errors = []
-    for file in raw_pubtrials_data_files:
-        with open(file, "r") as f:
-            data = csv.DictReader(f, fieldnames=["atccode", "drug"])
-            next(data)
-            for row in data:
-                try:
-                    valid_pubtrials_data.append(Drug(**row))
-                except ValidationError as e:
-                    logging.error(f"Drug row {row} failed validation: {e}")
-                    errors.append(row)
-    return valid_pubtrials_data, errors
+    for file in raw_drugs_data_files:
+        for row in read_raw_data(file, fieldnames=["atccode", "drug"]):
+            try:
+                valid_drugs_data.append(Drug(**row))
+            except ValidationError as e:
+                logging.error(f"Drug row {row} failed validation: {e}")
+                errors.append(row)
+    return valid_drugs_data, errors
 
 
 def cross_reference_models(

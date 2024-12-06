@@ -26,9 +26,9 @@ def list_files_in_folder(
     return files
 
 
-def read_csv(file: pathlib.Path) -> Iterator[dict[str, str]]:
+def read_csv(file: pathlib.Path, field_names: list[str]) -> Iterator[dict[str, str]]:
     with open(file, "r") as f:
-        data = csv.DictReader(f, PUBTRIALS_FIELD_NAMES)
+        data = csv.DictReader(f, field_names)
         next(data)
         for row in data:
             yield ({**row, "source_file": file.stem, "source_file_type": "csv"})
@@ -41,13 +41,15 @@ def read_json(file: pathlib.Path) -> Iterator[dict[str, str]]:
             yield ({**row, "source_file": file.stem, "source_file_type": "json"})
 
 
-def read_raw_data(raw_data_file: pathlib.Path) -> Iterator[dict[str, str]]:
+def read_raw_data(
+    raw_data_file: pathlib.Path, field_names: list[str] = PUBTRIALS_FIELD_NAMES
+) -> Iterator[dict[str, str]]:
     if raw_data_file.suffix not in SUPPORTED_EXTENSIONS:
         raise ValueError("Unsupported file format")
     if not raw_data_file.is_file():
         raise
     if raw_data_file.suffix == ".csv":
-        return read_csv(raw_data_file)
+        return read_csv(raw_data_file, field_names)
     elif raw_data_file.suffix == ".json":
         return read_json(raw_data_file)
 
