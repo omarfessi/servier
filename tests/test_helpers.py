@@ -1,15 +1,13 @@
 from hamcrest import assert_that, equal_to, empty, contains_inanyorder, raises, calling
 import pytest
 
-from src.utils.helpers import (
+from servier.utils.helpers import (
     get_all_journals_by_drug,
     get_all_drugs_by_journals,
-    get_drugs_from_journals_that_mention_a_specific_drug,
     list_files_in_folder,
-    read_raw_data
-    
+    read_raw_data,
 )
-from src.config import PUBTRIALS_FILE_NAMES, PUBTRIALS_FIELD_NAMES
+from servier.config import PUBTRIALS_FILE_NAMES, PUBTRIALS_FIELD_NAMES
 
 data = [
     {
@@ -185,11 +183,7 @@ class TestGetAllJournalsByDrugs:
         # Then
         assert_that(
             journals,
-            equal_to(
-                set(
-                    ("Journal of photochemistry and photobiology. B, Biology",)
-                )
-            ),
+            equal_to(set(("Journal of photochemistry and photobiology. B, Biology",))),
         )
 
     def test_get_all_journals_by_drugs_with_multiple_mentions(self):
@@ -235,9 +229,7 @@ class TestGetAllDrugsByJournals:
                 ["BETAMETHASONE"],
             ),
             (
-                [
-                    "The journal of allergy and clinical immunology. In practice"
-                ],
+                ["The journal of allergy and clinical immunology. In practice"],
                 ["EPINEPHRINE"],
             ),
             (["Journal of food protection"], ["TETRACYCLINE"]),
@@ -267,9 +259,7 @@ class TestGetAllDrugsByJournals:
         extra_filters = {"source_file": "clinical_trials"}
         expected = ["DIPHENHYDRAMINE", "EPINEPHRINE"]
         # When
-        drugs = get_all_drugs_by_journals(
-            data, journals=journals, **extra_filters
-        )
+        drugs = get_all_drugs_by_journals(data, journals=journals, **extra_filters)
         # Then
         assert_that(drugs, contains_inanyorder(*expected))
 
@@ -364,15 +354,17 @@ class TestListFilesInFolder:
         # Assertions
         assert_that(txt_file, equal_to(tmp_path / "dummy_file.txt"))
         assert_that(files, contains_inanyorder(csv_file, json_file))
-    
-    def test_list_files_in_folder_should_return_empty_list_when_no_file_in_dir(self, tmp_path):
+
+    def test_list_files_in_folder_should_return_empty_list_when_no_file_in_dir(
+        self, tmp_path
+    ):
         # When no file in the directory
         # Given
         files = list_files_in_folder(tmp_path, PUBTRIALS_FILE_NAMES)
         # Assertions
         assert_that(files, empty())
-        
-        
+
+
 class TestReadRawData:
     def test_read_raw_data_should_raise_value_error_for_unsupported_file_format(
         self, tmp_path
@@ -380,9 +372,12 @@ class TestReadRawData:
         # Given
         unsupported_file = tmp_path / "unsupported_file.txt"
         unsupported_file.write_text("FAKE_CONTENT")
-        
+
         # When / Then
-        assert_that(calling(read_raw_data).with_args(unsupported_file), raises(ValueError, "Unsupported file format"))
+        assert_that(
+            calling(read_raw_data).with_args(unsupported_file),
+            raises(ValueError, "Unsupported file format"),
+        )
 
     def test_read_raw_data_should_return_csv_data(self, temp_csv_file):
         # Given
@@ -391,14 +386,14 @@ class TestReadRawData:
                 "id": "1",
                 "title": "FAKE_TITLE",
                 "date": "2024-11-13",
-                "journal": "Journal of emergency nursing"
+                "journal": "Journal of emergency nursing",
             },
         ]
         csv_file = temp_csv_file("pubmed.csv", PUBTRIALS_FIELD_NAMES, data)
-        
+
         # When
         result = list(read_raw_data(csv_file))
-        
+
         # Then
         expected_result = [
             {
@@ -423,10 +418,10 @@ class TestReadRawData:
             },
         ]
         json_file = temp_json_file("pubmed.json", data)
-        
+
         # When
         result = list(read_raw_data(json_file))
-        
+
         # Then
         expected_result = [
             {
@@ -439,6 +434,3 @@ class TestReadRawData:
             }
         ]
         assert_that(result, equal_to(expected_result))
-
-
-
