@@ -144,15 +144,14 @@ def test_cross_reference_models():
 
 class TestGetDrugsFromJournalsThatMentionASpecificDrug:
     def test_get_drugs_from_journals_that_mention_a_specific_drug(
-        self, tmp_path, temp_json_file, cross_reference_sample_data
+        self,
+        temp_json_file,
+        cross_reference_sample_data,
+        silver_and_gold_paths,
     ):
         # Given
         json_file_name = "cross_reference_data_test.json"
-        silver_zone_path = tmp_path / "silver_zone"
-        silver_zone_path.mkdir()
-
-        gold_zone_path = tmp_path / "gold_zone"
-        gold_zone_path.mkdir()
+        silver_zone_path, gold_zone_path = silver_and_gold_paths
 
         specific_drug = "DIPHENHYDRAMINE"
         expected_drugs = ["DIPHENHYDRAMINE"]
@@ -174,16 +173,15 @@ class TestGetDrugsFromJournalsThatMentionASpecificDrug:
         assert_that(drugs, equal_to(expected_drugs))
 
     def test_get_drugs_from_journals_that_mention_a_specific_drug_with_unknown_drug(
-        self, tmp_path, temp_json_file, cross_reference_sample_data
+        self,
+        temp_json_file,
+        cross_reference_sample_data,
+        silver_and_gold_paths,
     ):
         # Given
         specific_drug = "UNKNOWN_DRUG"
         json_file_name = "cross_reference_data_test.json"
-        silver_zone_path = tmp_path / "silver_zone"
-        silver_zone_path.mkdir()
-
-        gold_zone_path = tmp_path / "gold_zone"
-        gold_zone_path.mkdir()
+        silver_zone_path, gold_zone_path = silver_and_gold_paths
 
         temp_json_file(silver_zone_path / json_file_name, cross_reference_sample_data)
 
@@ -198,17 +196,13 @@ class TestGetDrugsFromJournalsThatMentionASpecificDrug:
         assert len(output_files) == 0
 
     def test_get_drugs_from_journals_that_mention_a_specific_drug_with_multiple_mentions(
-        self, tmp_path, temp_json_file, cross_reference_sample_data
+        self, temp_json_file, cross_reference_sample_data, silver_and_gold_paths
     ):
         # Given
         specific_drug = "BETAMETHASONE"
         expected_drugs = ["BETAMETHASONE", "ATROPINE"]
         json_file_name = "cross_reference_data_test.json"
-        silver_zone_path = tmp_path / "silver_zone"
-        silver_zone_path.mkdir()
-
-        gold_zone_path = tmp_path / "gold_zone"
-        gold_zone_path.mkdir()
+        silver_zone_path, gold_zone_path = silver_and_gold_paths
         temp_json_file(silver_zone_path / json_file_name, cross_reference_sample_data)
 
         # When

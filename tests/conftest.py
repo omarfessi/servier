@@ -44,6 +44,17 @@ def temp_json_file(tmp_path):
 
 
 @pytest.fixture
+def silver_and_gold_paths(tmp_path):
+    silver_zone_path = tmp_path / "silver_zone"
+    silver_zone_path.mkdir()
+
+    gold_zone_path = tmp_path / "gold_zone"
+    gold_zone_path.mkdir()
+
+    return silver_zone_path, gold_zone_path
+
+
+@pytest.fixture
 def cross_reference_sample_data():
     return [
         {
