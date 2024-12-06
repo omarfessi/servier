@@ -4,3 +4,4 @@ servier/utils/__pycache__
 tests/__pycache__
 servier.egg-info/
 dist/
+.vscode/
