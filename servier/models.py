@@ -27,7 +27,7 @@ class PubClinical(BaseModel):
 
 
 class Drug(BaseModel):
-    atccode: str
+    atccode: NonEmptyStr
     drug: NonEmptyStr
     source_file: str = "drugs.csv"
     source_file_type: str = "csv"
