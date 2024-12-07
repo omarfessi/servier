@@ -11,6 +11,8 @@ dependencies = [
   "python-dateutil",
   "pydantic",
 ]
+[project.optional-dependencies]
+test = ["pytest", "pyhamcrest", "pytest-mock"]
 authors = [
   {name = "Omar Fessi", email = "omarfessy@gmail.com"},
 ]
