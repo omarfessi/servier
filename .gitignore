@@ -1,4 +1,5 @@
 .venv
+.venvtest
 servier/__pycache__
 servier/utils/__pycache__
 tests/__pycache__

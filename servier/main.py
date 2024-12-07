@@ -43,7 +43,7 @@ def curate_drugs_data(
     valid_drugs_data = []
     errors = []
     for file in raw_drugs_data_files:
-        for row in read_raw_data(file, fieldnames=["atccode", "drug"]):
+        for row in read_raw_data(file, ["atccode", "drug"]):
             try:
                 valid_drugs_data.append(Drug(**row))
             except ValidationError as e:
