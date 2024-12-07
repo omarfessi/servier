@@ -1,7 +1,14 @@
 import click
 import pathlib
 
-from .config import PUBLICATIONS, DRUGS, SILVER_ZONE, GOLD_ZONE, CORRUPTED_DATA_ZONE
+from .config import (
+    DISPLAY_PATHS,
+    PUBLICATIONS,
+    DRUGS,
+    SILVER_ZONE,
+    GOLD_ZONE,
+    CORRUPTED_DATA_ZONE,
+)
 from .main import (
     _main_pipeline,
     _journal_with_max_drugs,
@@ -19,28 +26,28 @@ def cli():
     "--raw-pubclinical-data",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=PUBLICATIONS,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['PUBLICATIONS']}'",
     help="Path to the raw pubclinical data.",
 )
 @click.option(
     "--raw-drug-data",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=DRUGS,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['DRUGS']}'",
     help="Path to the raw drug data.",
 )
 @click.option(
     "--silver_zone_path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=SILVER_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['SILVER_ZONE']}'",
     help="Path to the silver zone.",
 )
 @click.option(
     "--trash_zone_path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=CORRUPTED_DATA_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['CORRUPTED_DATA_ZONE']}'",
     help="Path to the trash zone for corrupted data.",
 )
 def main_pipeline(
@@ -61,14 +68,14 @@ def main_pipeline(
     "--silver-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=SILVER_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['SILVER_ZONE']}'",
     help="Path to the silver zone.",
 )
 @click.option(
     "--gold-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=GOLD_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['GOLD_ZONE']}'",
     help="Path to the gold zone.",
 )
 def journal_with_max_drugs(
@@ -83,14 +90,14 @@ def journal_with_max_drugs(
     "--silver-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=SILVER_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['SILVER_ZONE']}'",
     help="Path to the silver zone.",
 )
 @click.option(
     "--gold-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=GOLD_ZONE,
-    show_default=True,
+    show_default=f"'{DISPLAY_PATHS['GOLD_ZONE']}'",
     help="Path to the gold zone.",
 )
 def get_drugs_from_journals_that_mention_a_specific_drug(
