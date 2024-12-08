@@ -1,0 +1,3 @@
+[submodule "servier-data"]
+	path = servier-data
+	url = https://github.com/omarfessi/servier-data

@@ -7,7 +7,7 @@ function help {
     compgen -A function | cat -n
 }
 
-function clean:data-dir {
+function data-dir:clean {
     echo "Cleaning contents of corrupted_data, gold_zone, and silver_zone directories..."
     find "$THIS_DIR/data/corrupted_data" -type f -print -exec rm -rf {} +
     find "$THIS_DIR/data/gold_zone" -type f -print -exec rm -rf {} +
@@ -15,11 +15,23 @@ function clean:data-dir {
     echo "Directories cleaned: corrupted_data, gold_zone, silver_zone."
 }
 
+function data-dir:create {
+    echo "Creating the data folder structure..."
+    ROOT_DIR="data"
+    mkdir -p "$ROOT_DIR/corrupted_data"
+    mkdir -p "$ROOT_DIR/gold_zone"
+    mkdir -p "$ROOT_DIR/landing_zone"
+    mkdir -p "$ROOT_DIR/silver_zone"
+    git submodule add --force https://github.com/omarfessi/servier-data
+    echo "Data folder structure created successfully with servier's data."
+    mv servier-data/* "$ROOT_DIR/landing_zone/"
+}
 function virtualenv:create {
     ENV_NAME="${@:-.venvtest}"  
     echo "Creating and Activating the virtual environment called $ENV_NAME..."
     
     if [ ! -d "$ENV_NAME" ]; then
+
         python -m venv "$ENV_NAME"
     fi 
 
