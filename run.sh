@@ -22,8 +22,7 @@ function data-dir:create {
     mkdir -p "$ROOT_DIR/gold_zone"
     mkdir -p "$ROOT_DIR/landing_zone"
     mkdir -p "$ROOT_DIR/silver_zone"
-    git submodule add --force https://github.com/omarfessi/servier-data
-    echo "Data folder structure created successfully with servier's data."
+    # git submodule add --force https://github.com/omarfessi/servier-data
     mv servier-data/* "$ROOT_DIR/landing_zone/"
 }
 function virtualenv:create {
@@ -36,6 +35,8 @@ function virtualenv:create {
     fi 
 
     source "$ENV_NAME/bin/activate"
+    echo "Virtual environment $ENV_NAME activated. and python is installed at $(which python)"
+
 }
 
 function virtualenv:delete {
@@ -89,6 +90,7 @@ function install:dev-mode {
 
 function lint {
     echo "Running lint checks..."
+    #TODO: Add linters
 }
 
 function test:unit-tests {
@@ -96,6 +98,23 @@ function test:unit-tests {
     python -m pytest -vv -s ${@:-"$THIS_DIR/tests/"}
 }
 
+function servier-aggregate:main-pipeline {
+    virtualenv:create
+    echo "Running servier-aggregate main pipeline..."
+    servier-aggregate main-pipeline  --raw-pubclinical-data=data/landing_zone/publications_data --raw-drug-data=data/landing_zone/referential_data --silver-zone-path=data/silver_zone --trash-zone-path=data/corrupted_data
+}
+
+function servier-aggregate:journal-with-max-drugs {
+    virtualenv:create
+    echo "Running servier-aggregate journal-with-max-drugs pipeline..."
+    servier-aggregate journal-with-max-drugs --silver-zone-path=data/silver_zone --gold-zone-path=data/gold_zone
+}
+
+function servier-aggregate:get-drugs-from-journals-that-mention-a-specific-drug {
+    virtualenv:create
+    echo "Running servier-aggregate get-drugs-from-journals-that-mention-a-specific-drug pipeline..."
+    servier-aggregate get-drugs-from-journals-that-mention-a-specific-drug "$@" --silver-zone-path=data/silver_zone --gold-zone-path=data/gold_zone
+}
 
 # Task execution logic
 if [[ $# -eq 0 ]]; then
@@ -113,3 +132,4 @@ else
     echo "Use './run.sh help' for available tasks."
     exit 1
 fi
+
