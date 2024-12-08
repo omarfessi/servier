@@ -37,14 +37,14 @@ def cli():
     help="Path to the raw drug data.",
 )
 @click.option(
-    "--silver_zone_path",
+    "--silver-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=SILVER_ZONE,
     show_default=f"'{DISPLAY_PATHS['SILVER_ZONE']}'",
     help="Path to the silver zone.",
 )
 @click.option(
-    "--trash_zone_path",
+    "--trash-zone-path",
     type=click.Path(exists=True, file_okay=False, path_type=pathlib.Path),
     default=CORRUPTED_DATA_ZONE,
     show_default=f"'{DISPLAY_PATHS['CORRUPTED_DATA_ZONE']}'",
