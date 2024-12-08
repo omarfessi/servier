@@ -1,8 +1,13 @@
 #!/bin/bash
-# set -e
+set -e
 THIS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-function clean-data-dir {
+function help {
+    echo "Available tasks:"
+    compgen -A function | cat -n
+}
+
+function clean:data-dir {
     echo "Cleaning contents of corrupted_data, gold_zone, and silver_zone directories..."
     find "$THIS_DIR/data/corrupted_data" -type f -print -exec rm -rf {} +
     find "$THIS_DIR/data/gold_zone" -type f -print -exec rm -rf {} +
@@ -10,38 +15,73 @@ function clean-data-dir {
     echo "Directories cleaned: corrupted_data, gold_zone, silver_zone."
 }
 
-function help {
-    echo "Available tasks:"
-    compgen -A function | cat -n
+function virtualenv:create {
+    ENV_NAME="${@:-.venvtest}"  
+    echo "Creating and Activating the virtual environment called $ENV_NAME..."
+    
+    if [ ! -d "$ENV_NAME" ]; then
+        python -m venv "$ENV_NAME"
+    fi 
+
+    source "$ENV_NAME/bin/activate"
+}
+
+function virtualenv:delete {
+    ENV_NAME="${@:-.venvtest}" 
+    echo "Deleting $ENV_NAME environment..."
+    if [ -d $ENV_NAME ]; then
+        rm -rf $ENV_NAME
+        echo "$ENV_NAME directory removed."
+    else
+        echo "$ENV_NAME does not exist."
+    fi 
+}
+
+function clean:build {
+    echo "Cleaning build artifacts..."
+    rm -rf dist build || true
+    find . -type d \( -name "*egg-info" -o -name "*.dist-info" \) -exec rm -rf {} + || true
+}
+
+function wheel:build { 
+    echo "Building the wheel..."
+    python -m build --sdist --wheel "$THIS_DIR/"
+}
+
+function wheel:install {
+    echo "Installing the wheel..."
+    pip install ./dist/*.whl
 }
 
 function test:wheel-locally {
-    echo "Creating a new virtual environment called .venvtest..."
-    rm -rf .venvtest || true
-    python -m venv .venvtest
-    source .venvtest/bin/activate
+    virtualenv:delete
+    virtualenv:create
     echo "Checking in which environement python is installed.. $(which python)"
     pip install --upgrade pip
-    rm -rf dist build || true
-    find . -type d \( -name "*egg-info" -o -name "*.dist-info" \) -exec rm -rf {} + || true
-    echo "Installing dev/build dependecies in the virtual environment..."
+    clean:build
+    echo "Installing dev/build dependecies in the virtual environment .venvtest..."
     pip install -r "$THIS_DIR"/requirements-dev.txt
     echo "Building the wheel..."
-    python -m build --sdist --wheel "$THIS_DIR/"
-    pip install ./dist/*.whl
-    echo "Running tests..."
-    python -m pytest -vv -s ${@:-"$THIS_DIR/tests/"}
+    wheel:build
+    wheel:install
+    test:unit-tests
 }
 
 function install:dev-mode {
     echo "Installing the project in dev mode..."
-    python -m venv .venvtest
+    echo "Creating and Activating the virtual environment called .venv..."
+    python -m venv .venv
     python -m pip install --upgrade pip
     pip install --editable "$THIS_DIR/[dev]"
 }
 
 function lint {
     echo "Running lint checks..."
+}
+
+function test:unit-tests {
+    echo "Running tests..."
+    python -m pytest -vv -s ${@:-"$THIS_DIR/tests/"}
 }
 
 
