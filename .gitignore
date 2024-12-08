@@ -1,5 +1,6 @@
 .venv
 .venvtest
+.sql_part_env
 servier/__pycache__
 servier/utils/__pycache__
 tests/__pycache__
