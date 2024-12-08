@@ -92,3 +92,7 @@ If you'd like to install the project in development mode (editable mode), use th
 ```bash
 ./run.sh help
 ```
+
+##### 10. SQL part of the test
+duckddl.py and .sql files are only there to answer the second part questions of the test. They have nothing to do with the servier project being developped.
+I used duckdb to use their in-memory processing and issues sql queries, if you want to try it out, activate a virtual environment and bash ```pip install duckdb```and have fun :) 
