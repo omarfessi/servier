@@ -7,3 +7,4 @@ servier.egg-info/
 dist/
 build/
 .vscode/
+data/
