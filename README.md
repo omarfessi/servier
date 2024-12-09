@@ -96,7 +96,7 @@ If you'd like to install the project in development mode (editable mode), use th
 *Issues with Current Approach*:
 <u>Memory Usage</u>: If the dataset is very large, storing all data in memory might lead to memory exhaustion.
 <u>Inefficiency</u>: The function reads the file row-by-row and performs validation on each row. For very large datasets, this can be extremely slow.
-<u>Single-threaded Processing</u>: Your approach seems to be sequential, which limits the speed of execution.
+<u>Single-threaded Processing</u>: which limits the speed of execution.
 
 For large datasets, it's better to use a framework that allows for batch processing, parallelization, and efficient memory management. Here's some examples:
 1. Use a Distributed Framework like Spark to enable parallel processing and keep python-like logic to overcome the potentiel issues with the current approach. User Defined Functions can be of use to validate and clean data instead.

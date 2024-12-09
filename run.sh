@@ -88,9 +88,9 @@ function install:dev-mode {
     pip install --editable "$THIS_DIR/[dev]"
 }
 
+# run linting, formatting, and other static code quality tools
 function lint {
-    echo "Running lint checks..."
-    #TODO: Add linters
+    pre-commit run --all-files
 }
 
 function test:unit-tests {
