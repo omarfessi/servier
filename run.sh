@@ -26,13 +26,13 @@ function data-dir:create {
     mv servier-data/* "$ROOT_DIR/landing_zone/"
 }
 function virtualenv:create {
-    ENV_NAME="${@:-.venvtest}"  
+    ENV_NAME="${@:-.venvtest}"
     echo "Creating and Activating the virtual environment called $ENV_NAME..."
-    
+
     if [ ! -d "$ENV_NAME" ]; then
 
         python -m venv "$ENV_NAME"
-    fi 
+    fi
 
     source "$ENV_NAME/bin/activate"
     echo "Virtual environment $ENV_NAME activated. and python is installed at $(which python)"
@@ -40,14 +40,14 @@ function virtualenv:create {
 }
 
 function virtualenv:delete {
-    ENV_NAME="${@:-.venvtest}" 
+    ENV_NAME="${@:-.venvtest}"
     echo "Deleting $ENV_NAME environment..."
     if [ -d $ENV_NAME ]; then
         rm -rf $ENV_NAME
         echo "$ENV_NAME directory removed."
     else
         echo "$ENV_NAME does not exist."
-    fi 
+    fi
 }
 
 function clean:build {
@@ -56,7 +56,7 @@ function clean:build {
     find . -type d \( -name "*egg-info" -o -name "*.dist-info" \) -exec rm -rf {} + || true
 }
 
-function wheel:build { 
+function wheel:build {
     echo "Building the wheel..."
     python -m build --sdist --wheel "$THIS_DIR/"
 }
@@ -132,4 +132,3 @@ else
     echo "Use './run.sh help' for available tasks."
     exit 1
 fi
-

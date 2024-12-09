@@ -1,9 +1,18 @@
-import pathlib
-from typing import List, Iterator, Iterable
-import csv, json
+import csv
 import itertools
-from ..config import PUBTRIALS_FIELD_NAMES, SUPPORTED_EXTENSIONS
+import json
 import logging
+import pathlib
+from typing import (
+    Iterable,
+    Iterator,
+    List,
+)
+
+from ..config import (
+    PUBTRIALS_FIELD_NAMES,
+    SUPPORTED_EXTENSIONS,
+)
 
 
 def list_files_in_folder(

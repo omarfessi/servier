@@ -2,3 +2,4 @@ pytest
 pyhamcrest
 pytest-mock
 build
+pre-commit

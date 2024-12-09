@@ -1,13 +1,23 @@
 import json
 import pathlib
-from hamcrest import assert_that, equal_to, contains_inanyorder, has_length
-from servier.main import (
-    curate_pubclinical_data,
-    curate_drugs_data,
-    cross_reference_models,
-    _get_drugs_from_journals_that_mention_a_specific_drug,
+
+from hamcrest import (
+    assert_that,
+    contains_inanyorder,
+    equal_to,
+    has_length,
 )
-from servier.models import PubClinical, Drug
+
+from servier.main import (
+    _get_drugs_from_journals_that_mention_a_specific_drug,
+    cross_reference_models,
+    curate_drugs_data,
+    curate_pubclinical_data,
+)
+from servier.models import (
+    Drug,
+    PubClinical,
+)
 
 
 def test_curate_pubclinical_data_valid(mocker):

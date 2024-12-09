@@ -20,5 +20,11 @@ readme = "README.md"
 [tool.setuptools]
 packages = ["servier", "servier.utils"]
 
+[tool.isort]
+profile = "black"
+multi_line_output = "VERTICAL_HANGING_INDENT"
+force_grid_wrap = 2
+line_length = 119
+
 [project.scripts]
-servier-aggregate = "servier:cli" 
+servier-aggregate = "servier:cli"

@@ -1,10 +1,18 @@
-from pydantic import BaseModel, BeforeValidator
-from typing import Annotated
 import datetime
 import re
+from typing import Annotated
 
-from .utils.models_helper import parse_date, check_not_empty_str, replace_hex_sequences
+from pydantic import (
+    BaseModel,
+    BeforeValidator,
+)
+
 from .config import HEX_PATTERN
+from .utils.models_helper import (
+    check_not_empty_str,
+    parse_date,
+    replace_hex_sequences,
+)
 
 Date = Annotated[datetime.date, BeforeValidator(parse_date)]
 NonEmptyStr = Annotated[str, BeforeValidator(check_not_empty_str)]

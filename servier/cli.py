@@ -1,18 +1,19 @@
-import click
 import pathlib
 
+import click
+
 from .config import (
-    DISPLAY_PATHS,
-    PUBLICATIONS,
-    DRUGS,
-    SILVER_ZONE,
-    GOLD_ZONE,
     CORRUPTED_DATA_ZONE,
+    DISPLAY_PATHS,
+    DRUGS,
+    GOLD_ZONE,
+    PUBLICATIONS,
+    SILVER_ZONE,
 )
 from .main import (
-    _main_pipeline,
-    _journal_with_max_drugs,
     _get_drugs_from_journals_that_mention_a_specific_drug,
+    _journal_with_max_drugs,
+    _main_pipeline,
 )
 
 

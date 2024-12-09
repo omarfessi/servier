@@ -1,7 +1,11 @@
-import duckdb
 import random
 import string
-from datetime import datetime, timedelta
+from datetime import (
+    datetime,
+    timedelta,
+)
+
+import duckdb
 
 conn = duckdb.connect("duckdb.servier")
 

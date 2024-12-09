@@ -1,13 +1,23 @@
-from hamcrest import assert_that, equal_to, empty, contains_inanyorder, raises, calling
 import pytest
+from hamcrest import (
+    assert_that,
+    calling,
+    contains_inanyorder,
+    empty,
+    equal_to,
+    raises,
+)
 
+from servier.config import (
+    PUBTRIALS_FIELD_NAMES,
+    PUBTRIALS_FILE_NAMES,
+)
 from servier.utils.helpers import (
-    get_all_journals_by_drug,
     get_all_drugs_by_journals,
+    get_all_journals_by_drug,
     list_files_in_folder,
     read_raw_data,
 )
-from servier.config import PUBTRIALS_FILE_NAMES, PUBTRIALS_FIELD_NAMES
 
 
 class TestGetAllJournalsByDrugs:
