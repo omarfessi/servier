@@ -92,7 +92,49 @@ If you'd like to install the project in development mode (editable mode), use th
 ```bash
 ./run.sh help
 ```
+##### 10. Potentials improvements to scale up and handle large data.
+*Issues with Current Approach*:
+<u>Memory Usage</u>: If the dataset is very large, storing all data in memory might lead to memory exhaustion.
+<u>Inefficiency</u>: The function reads the file row-by-row and performs validation on each row. For very large datasets, this can be extremely slow.
+<u>Single-threaded Processing</u>: Your approach seems to be sequential, which limits the speed of execution.
 
-##### 10. SQL part of the test
+For large datasets, it's better to use a framework that allows for batch processing, parallelization, and efficient memory management. Here's some examples:
+1. Use a Distributed Framework like Spark to enable parallel processing and keep python-like logic to overcome the potentiel issues with the current approach. User Defined Functions can be of use to validate and clean data instead.
+Here's a example of UDF that can check if the title is not empty
+```python
+from pyspark.sql.functions import udf
+from pyspark.sql.types import StringType
+
+# UDF to check for empty strings
+def check_not_empty(value: str) -> str:
+    if not value or value.strip() == "":
+        return "Invalid title"
+    return value
+
+# Register UDF in Spark
+check_not_empty_udf = udf(check_not_empty, StringType())
+
+# Apply UDF to the DataFrame
+pubclinical_df = pubclinical_df.withColumn("validated_title", check_not_empty_udf(pubclinical_df["title"]))
+```
+
+
+2. Use SQL within a Cloud datawarehouse  to take advantage of their distributed processing engine like Bigquery or Snowflake. DBT or Dataform for data transformation (to achieve the final results in silver and gold zones) and Great Expectation to validate data and set up rules(instead of Pydantic)
+
+3. Use best suited table/file schemas.
+Using different file format like Apache Parquet can be significantly better than using CSV or JSON when dealing with large datasets, especially in a distributed data processing environment like Apache Spark.
+Parquet is a columnar storage format(which means it stores data by columns rather than rows) it allows for better performance especially if only a tiny subset of columns are needed like  **title** or **drug**, the processing framework would only read those 2 columns instead of the whole row which reduces mem usage.
+Parquet can as well use efficient compression algorithms that helps reduce storage space.
+In addition to high performance capabilities of Parquet, it is interoperable and typed schema to ensure data is consistent.
+The same for Bigquery since it uses **columnar storage** format (compared to csv or json). With Bigquery it is possible to **partition** data by date column and only query the partition we are intrested in. To go even further with **clustering** and organize data within each partition by one or more columns to make query even faster and efficient.
+This is an example of creating a table that hold clinical trials data, it is paritionned by date and clustering by journal, drug
+```SQL
+CREATE OR REPLACE TABLE `project-id.dataset-id.clinical_trials`
+PARTITION BY date
+CLUSTER BY journal, drug
+
+```
+
+##### 11. SQL part of the test
 duckddl.py and .sql files are only there to answer the second part questions of the test. They have nothing to do with the servier project being developped.
 I used duckdb to use their in-memory processing and issues sql queries, if you want to try it out, activate a virtual environment and bash ```pip install duckdb```and have fun :) 
