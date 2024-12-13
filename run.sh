@@ -86,6 +86,7 @@ function install:dev-mode {
     python -m venv .venv
     python -m pip install --upgrade pip
     pip install --editable "$THIS_DIR/[dev]"
+    pre-commit install
 }
 
 # run linting, formatting, and other static code quality tools
