@@ -33,9 +33,9 @@ def test_curate_pubclinical_data_valid(mocker):
     mock_read_raw_data.return_value = [valid_pubclinical_data]
     raw_pubtrials_data_files = [pathlib.Path("test_pubtrials_valid.csv")]
     valid_pubtrials_data, errors = curate_pubclinical_data(raw_pubtrials_data_files)
-    assert_that(has_length(valid_pubtrials_data), 1)
+    assert_that(valid_pubtrials_data, has_length(1))
     assert_that(valid_pubtrials_data[0], equal_to(expected))
-    assert_that(has_length(errors), 0)
+    assert_that(errors, has_length(0))
 
 
 def test_curate_pubclinical_data_not_all_valid(mocker):
@@ -61,7 +61,7 @@ def test_curate_pubclinical_data_not_all_valid(mocker):
     raw_pubtrials_data_files = [pathlib.Path("test_pubtrials.csv")]
     valid_pubtrials_data, errors = curate_pubclinical_data(raw_pubtrials_data_files)
     assert_that(valid_pubtrials_data, contains_inanyorder(*expected_list))
-    assert_that(has_length(errors), 0)
+    assert_that(errors, has_length(1))
 
 
 def test_curate_drugs_data_valid(mocker):
@@ -87,7 +87,7 @@ def test_curate_drugs_data_valid(mocker):
     raw_drugs_data_files = [pathlib.Path("test_drugs_valid.csv")]
     valid_drugs_data, errors = curate_drugs_data(raw_drugs_data_files)
     assert_that(valid_drugs_data, contains_inanyorder(*expected_list))
-    assert_that(has_length(errors), 0)
+    assert_that(errors, has_length(0))
 
 
 def test_curate_drugs_data_not_all_valid(mocker):
@@ -113,7 +113,7 @@ def test_curate_drugs_data_not_all_valid(mocker):
     expected_list = [Drug(**expected_list[1])]
     valid_drugs_data, errors = curate_drugs_data(raw_drugs_data_files)
     assert_that(valid_drugs_data, contains_inanyorder(*expected_list))
-    assert_that(has_length(errors), 1)
+    assert_that(errors, has_length(1))
 
 
 def test_cross_reference_models():
@@ -138,8 +138,8 @@ def test_cross_reference_models():
         Drug(atccode="A02", drug="Ibuprofen"),
     ]
     cross_reference_data, errors = cross_reference_models(pubclinical_data, drugs_data)
-    assert_that(has_length(cross_reference_data), 2)
-    assert_that(has_length(errors), 0)
+    assert_that(cross_reference_data, has_length(2))
+    assert_that(errors, has_length(0))
 
 
 class TestGetDrugsFromJournalsThatMentionASpecificDrug:
