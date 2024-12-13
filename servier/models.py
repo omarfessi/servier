@@ -5,6 +5,7 @@ from typing import Annotated
 from pydantic import (
     BaseModel,
     BeforeValidator,
+    ConfigDict,
 )
 
 from .config import HEX_PATTERN
@@ -30,8 +31,10 @@ class PubClinical(BaseModel):
     source_file: str
     source_file_type: str
 
-    class Config:
-        extra = "ignore"
+    # class Config:
+    #     extra = "ignore"
+
+    model_config = ConfigDict(extra="ignore")
 
 
 class Drug(BaseModel):
