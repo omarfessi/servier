@@ -30,6 +30,22 @@ now = datetime.datetime.now().strftime("%Y_%m_%d")
 def curate_pubclinical_data(
     raw_pubtrials_data_files: list[pathlib.Path],
 ) -> tuple[list[PubClinical], list[str]]:
+    """
+    Curates raw clinical trial data from a list of files.
+
+    This function reads raw clinical trial data from the provided list of file paths,
+    validates each row, and returns a tuple containing a list of valid PubClinical
+    objects and a list of rows that failed validation.
+
+    Args:
+        raw_pubtrials_data_files (list[pathlib.Path]): A list of file paths containing
+            raw clinical trial data.
+
+    Returns:
+        tuple[list[PubClinical], list[str]]: A tuple where the first element is a list
+            of valid PubClinical objects and the second element is a list of rows that
+            failed validation.
+    """
     valid_pubtrials_data = []
     errors = []
     for file in raw_pubtrials_data_files:
@@ -45,6 +61,20 @@ def curate_pubclinical_data(
 def curate_drugs_data(
     raw_drugs_data_files: list[pathlib.Path],
 ) -> tuple[list[Drug], list[str]]:
+    """
+    Curates raw drugs data from a list of file paths.
+
+    This function reads raw drug data from the provided list of file paths,
+    validates each row, and returns a tuple containing a list of valid Drug
+    objects and a list of rows that failed validation.
+
+    Args:
+        raw_drugs_data_files (list[pathlib.Path]): A list of file paths containing raw drug data.
+
+    Returns:
+        tuple[list[Drug], list[str]]: A tuple where the first element is a list of valid Drug objects,
+                                      and the second element is a list of rows that failed validation.
+    """
     valid_drugs_data = []
     errors = []
     for file in raw_drugs_data_files:
@@ -60,6 +90,20 @@ def curate_drugs_data(
 def cross_reference_models(
     pubclinical_data: list[PubClinical], drugs_data: list[Drug]
 ) -> tuple[list[CrossReference], list[str]]:
+    """
+    Cross-references clinical publications with drug data.
+    This function takes a list of clinical publication data and a list of drug data,
+    and cross-references them to find mentions of drugs in the publication titles.
+    It returns a list of cross-referenced data and a list of errors encountered during the process.
+    Args:
+        pubclinical_data (list[PubClinical]): A list of PubClinical objects containing publication data.
+        drugs_data (list[Drug]): A list of Drug objects containing drug data.
+    Returns:
+        tuple[list[CrossReference], list[str]]: A tuple containing two lists:
+            - A list of CrossReference objects representing the cross-referenced data.
+            - A list of strings representing errors encountered during the cross-referencing process.
+    """
+
     cross_reference = []
     cross_reference_errors = []
     for drug in drugs_data:
@@ -85,7 +129,26 @@ def cross_reference_models(
 def _main_pipeline(
     raw_pubclinical_data, raw_drug_data, silver_zone_path, trash_zone_path
 ) -> None:
-
+    """
+    Executes the main data processing pipeline.
+    This function performs the following steps:
+    1. Lists and curates public clinical trial data files.
+    2. Saves valid public clinical trial data to the silver zone.
+    3. Saves any validation errors to the trash zone.
+    4. Lists and curates drug data files.
+    5. Saves valid drug data to the silver zone.
+    6. Saves any validation errors to the trash zone.
+    7. Cross-references the curated publication/clinical trial data with the curated drug data.
+    8. Saves the cross-referenced data to the silver zone.
+    9. Saves any cross-referencing errors to the trash zone.
+    Args:
+        raw_pubclinical_data (str): Path to the raw public clinical trial data.
+        raw_drug_data (str): Path to the raw drug data.
+        silver_zone_path (str): Path to the directory where valid data should be saved.
+        trash_zone_path (str): Path to the directory where error data should be saved.
+    Returns:
+        None
+    """
     pubtrials_data_files = list_files_in_folder(
         raw_pubclinical_data, PUBTRIALS_FILE_NAMES
     )
@@ -134,6 +197,18 @@ def _main_pipeline(
 def _journal_with_max_drugs(
     silver_zone_path: pathlib.Path, gold_zone_path: pathlib.Path
 ) -> None:
+    """
+    Identifies the journal with the maximum number of distinct drugs from the cross-reference data
+    and saves the result to a JSON file in the gold zone path.
+    Args:
+        silver_zone_path (pathlib.Path): Path to the directory containing the silver zone data.
+        gold_zone_path (pathlib.Path): Path to the directory where the result JSON file will be saved.
+    Returns:
+        None
+    Logs:
+        - Error if no cross-reference data is found in the silver zone path.
+        - Error if the silver data format is unexpected.
+    """
     try:
         file = list(silver_zone_path.glob("cross_reference_data_*.json"))[0]
     except IndexError:
@@ -155,6 +230,21 @@ def _journal_with_max_drugs(
 def _get_drugs_from_journals_that_mention_a_specific_drug(
     silver_zone_path: pathlib.Path, gold_zone_path: pathlib.Path, drug_name: str
 ) -> None:
+    """
+    Extracts and saves a list of drugs mentioned in journals that reference a specified drug.
+    This function reads cross-reference data from a JSON file in the silver zone directory,
+    identifies journals that mention the specified drug, and then finds all drugs mentioned
+    in those journals. The resulting list of drugs is saved as a JSON file in the gold zone directory.
+    Args:
+        silver_zone_path (pathlib.Path): Path to the directory containing the silver zone data.
+        gold_zone_path (pathlib.Path): Path to the directory where the output JSON file will be saved.
+        drug_name (str): The name of the drug to search for in the journals.
+    Returns:
+        None
+    Logs:
+        Error: If no cross-reference data is found or if there is an unexpected data format.
+        Warning: If the specified drug is not mentioned in any journal.
+    """
     try:
         file = list(silver_zone_path.glob("cross_reference_data_*.json"))[0]
     except IndexError:
