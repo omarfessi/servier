@@ -1,3 +1,5 @@
+import pathlib
+
 import pytest
 from hamcrest import (
     assert_that,
@@ -226,6 +228,19 @@ class TestReadRawData:
         assert_that(
             calling(read_raw_data).with_args(unsupported_file),
             raises(ValueError, "Unsupported file format"),
+        )
+
+    def test_read_raw_data_should_raise_file_not_found_error(self, tmp_path, mocker):
+        # Given
+        non_existent_file = tmp_path / "non_existent_file.csv"
+
+        # Mock `is_file` to return True
+        mocker.patch.object(pathlib.Path, "is_file", return_value=False)
+
+        # When / Then
+        assert_that(
+            calling(read_raw_data).with_args(non_existent_file),
+            raises(FileNotFoundError),
         )
 
     def test_read_raw_data_should_return_csv_data(self, temp_csv_file):

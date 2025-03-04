@@ -91,7 +91,7 @@ def read_raw_data(
     if raw_data_file.suffix not in SUPPORTED_EXTENSIONS:
         raise ValueError("Unsupported file format")
     if not raw_data_file.is_file():
-        raise
+        raise FileNotFoundError(f"The file {raw_data_file} is not a file.")
     if raw_data_file.suffix == ".csv":
         return read_csv(raw_data_file, field_names)
     elif raw_data_file.suffix == ".json":
