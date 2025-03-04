@@ -136,5 +136,5 @@ CLUSTER BY journal, drug
 ```
 
 ##### 11. SQL part of the test
-duckddl.py and .sql files are only there to answer the second part questions of the test. They have nothing to do with the servier project being developped.
-I used duckdb to use their in-memory processing and issues sql queries, if you want to try it out, activate a virtual environment and bash ```pip install duckdb```and have fun :)
+``` duckddensetup.py``` and ```.sql``` files are only there to answer the second part questions of the test. They have nothing to do with the servier project being developped.    
+I used duckdb to use their in-memory processing and issues sql queries, if you want to try it out, activate a virtual environment and bash ```pip install duckdb```and run ```python duckdb_env_setup.py ``` to spin up an in-memory OLAP db against which you could run sql statements. have fun :)
