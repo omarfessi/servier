@@ -25,7 +25,6 @@ requests==2.32.3
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.9.4
-servier @ file:///Users/omarfessi/coding/python-projects/servier-project/dist/servier-0.1.0-py3-none-any.whl#sha256=aa08e048d571680a57835f08ac77c54d076a1f594e6a861a3bd524b5f73821fa
 six==1.17.0
 twine==6.0.1
 typing_extensions==4.12.2

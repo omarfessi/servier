@@ -112,7 +112,7 @@ def save_file_as_json(dest_location: pathlib.Path, data: Iterable) -> None:
         json.dump(data, f, indent=4, default=str, ensure_ascii=False)
 
 
-def sort_and_group_by_journal(cross_reference_data: List[dict[str, str]]) -> Iterable:
+def sort_and_group_by_journal(cross_reference_data: List[dict[str, str]]) -> Iterable[tuple[str, Iterator]]:
     """
     Sorts a list of dictionaries by the 'journal' key and groups the dictionaries by the 'journal' key.
     Args:
@@ -129,7 +129,7 @@ def sort_and_group_by_journal(cross_reference_data: List[dict[str, str]]) -> Ite
     return groups
 
 
-def journal_with_max_distinct_drugs(sorted_groups: Iterable) -> str:
+def journal_with_max_distinct_drugs(sorted_groups: Iterable[tuple[str, Iterator]]) -> str|None:
     """
     Determines the journal that mentions the maximum number of distinct drugs.
     Args:
@@ -139,11 +139,11 @@ def journal_with_max_distinct_drugs(sorted_groups: Iterable) -> str:
         str: The name of the journal that mentions the maximum number of distinct drugs.
     """
 
-    journals_with_distinct_drugs_count = []
+    journals_with_distinct_drugs_count = None
     max_of_disctinct_drugs_mentionned_by_any_journal = 0
+
     for journal, data_grouped_by_journal in sorted_groups:
-        list_of_drugs = [item["drug"] for item in data_grouped_by_journal]
-        count_of_distinct_drugs_per_journal = len(set(list_of_drugs))
+        count_of_distinct_drugs_per_journal = len({item["drug"] for item in data_grouped_by_journal})
         if (
             count_of_distinct_drugs_per_journal
             > max_of_disctinct_drugs_mentionned_by_any_journal
@@ -151,15 +151,9 @@ def journal_with_max_distinct_drugs(sorted_groups: Iterable) -> str:
             max_of_disctinct_drugs_mentionned_by_any_journal = (
                 count_of_distinct_drugs_per_journal
             )
-            journals_with_distinct_drugs_count.append(
-                (journal, count_of_distinct_drugs_per_journal)
-            )
-    max = filter(
-        lambda x: x[1] == max_of_disctinct_drugs_mentionned_by_any_journal,
-        journals_with_distinct_drugs_count,
-    )
-    return list(max)[0]
-
+            journals_with_distinct_drugs_count = journal
+    
+    return journals_with_distinct_drugs_count
 
 def journal_with_most_distinct_drug_mentions(
     cross_reference_data_as_dict: List[dict[str, str]]
