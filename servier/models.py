@@ -31,9 +31,6 @@ class PubClinical(BaseModel):
     source_file: str
     source_file_type: str
 
-    # class Config:
-    #     extra = "ignore"
-
     model_config = ConfigDict(extra="ignore")
 
 
